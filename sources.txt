@@ -4,6 +4,54 @@
 # Lines starting with # are ignored. Blank lines are ignored.
 # Add or remove lines here, then commit + push — the GitHub Action
 # will re-fetch everything and rebuild filters/merged.txt automatically.
+#
+# Trimmed 2026-08-25 based on actual per-source "new lines contributed"
+# data from a real run (see filters/merged.txt's own header for the
+# current breakdown). Removed as near-100% duplicates of other sources
+# already in this list, or (marked *) as low-value/stale regardless of
+# overlap:
+#   - Advertising Lists #6 (Easylist via firebog)            97/44,931 new
+#   - Advertising Lists #8 (FadeMind UncheckyAds)              0/9 new
+#   - The Big Blocklist Collection #1 (KADhosts)          3,361/43,331 new
+#   - The Big Blocklist Collection #2 (FadeMind Spam)          1/57 new
+#   - The Block List Project - Ransomware                      3/1,904 new
+#   - Tracking & Telemetry Lists #3 (FadeMind 2o7Net)           0/2,030 new
+#   - Malicious Lists #1 (Dandelion Sprout AntiMalwareHosts)  same list as
+#     "Dandelion Sprout's Anti-Malware List" below, just hosts-format
+#     instead of AdGuard-format — same domains, different syntax
+#   - Malicious Lists #3 (Disconnect simple_malvertising)     18/2,736 new
+#   - Malicious Lists #5 (FadeMind add.Risk)                    1/2,189 new
+#   - Malicious Lists #6 (Mandiant APT1 Appendix D)  * 2013 APT1 report —
+#     domains are essentially all dead 10+ years on
+#   - Phishing army (regular)                                   0/154,731
+#     new — fully superseded by "Phishing army extended" below
+#   - oisd (big)                                                0/269,053
+#     new — identical content to "OISD Blocklist Full" below
+#
+# Kept despite looking redundant by name, because the data showed they
+# contribute meaningfully unique content:
+#   - Advertising Lists #2 (AdguardDNS via firebog) — NOT the same feed
+#     as "AdGuard DNS filter" above despite the similar name (176,266/
+#     176,299 new)
+#   - Malicious Lists #12 (URLhaus hostfile) — different content than
+#     the other URLhaus-based list despite both being URLhaus-branded
+#     (351/351 new)
+#
+# The two largest sources by far are The Block List Project - Malware
+# (~2.66M rules) and Malicious Lists #9 / RPiList-Malware (~1.08M rules,
+# ~800K of them unique). Together they're roughly 75% of the whole
+# merged file's size. They're genuinely unique, not duplicates — this is
+# a coverage-vs-size tradeoff to make deliberately if you ever want a
+# much smaller file, not something to trim as "unnecessary."
+#
+# Currently failing to fetch (left in — the workflow tolerates single
+# source failures and just logs a warning):
+#   - Malicious Lists #2 (digitalside OSINT latestdomains)
+#
+# Format note: "Smart TV's (regex list)" below uses dnsmasq-style regex
+# syntax rather than AdGuard/hosts syntax — kept, but worth testing
+# separately if you rely on it, since AdGuard Home may not interpret
+# those lines the way dnsmasq does.
 
 AdGuard DNS filter | https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
 AdAway Default Blocklist | https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
@@ -21,38 +69,26 @@ Steven Black's List | https://raw.githubusercontent.com/StevenBlack/hosts/master
 The NoTracking blocklist | https://raw.githubusercontent.com/notracking/hosts-blocklists/master/adblock/adblock.txt
 Perflyst and Dandelion Sprout's Smart-TV Blocklist | https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt
 Smart TV's (regex list) | https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/regex.list
-The Big Blocklist Collection #1 (KADhosts) | https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
-The Big Blocklist Collection #2 (FadeMind Spam) | https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
 The Big Blocklist Collection #3 (w3kbl) | https://v.firebog.net/hosts/static/w3kbl.txt
 Advertising Lists #2 (AdguardDNS via firebog) | https://v.firebog.net/hosts/AdguardDNS.txt
 Advertising Lists #3 (Admiral) | https://v.firebog.net/hosts/Admiral.txt
 Advertising Lists #4 (anudeepND adservers) | https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
 Advertising Lists #5 (Disconnect simple_ad) | https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-Advertising Lists #6 (Easylist via firebog) | https://v.firebog.net/hosts/Easylist.txt
 Advertising Lists #7 (yoyo adservers) | https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
-Advertising Lists #8 (FadeMind UncheckyAds) | https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
 Advertising Lists #9 (hostsVN) | https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
 Tracking & Telemetry Lists #1 (Easyprivacy via firebog) | https://v.firebog.net/hosts/Easyprivacy.txt
 Tracking & Telemetry Lists #2 (Prigent-Ads via firebog) | https://v.firebog.net/hosts/Prigent-Ads.txt
-Tracking & Telemetry Lists #3 (FadeMind 2o7Net) | https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
 Malicious Lists #10 (RPiList-Phishing via firebog) | https://v.firebog.net/hosts/RPiList-Phishing.txt
 Malicious Lists #11 (Spam404) | https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
 Malicious Lists #12 (URLhaus hostfile) | https://urlhaus.abuse.ch/downloads/hostfile/
 The Block List Project - Malware | https://blocklistproject.github.io/Lists/adguard/malware-ags.txt
 The Block List Project - Phishing | https://blocklistproject.github.io/Lists/adguard/phishing-ags.txt
-The Block List Project - Ransomware | https://blocklistproject.github.io/Lists/adguard/ransomware-ags.txt
 The Block List Project - Ads | https://blocklistproject.github.io/Lists/adguard/ads-ags.txt
 Tracking & Telemetry Lists #4 (frogeye firstparty-trackers) | https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
-Malicious Lists #1 (Dandelion Sprout AntiMalwareHosts) | https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
 Malicious Lists #2 (digitalside OSINT latestdomains) | https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
-Malicious Lists #3 (Disconnect simple_malvertising) | https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
 Malicious Lists #4 (Prigent-Crypto via firebog) | https://v.firebog.net/hosts/Prigent-Crypto.txt
-Malicious Lists #5 (FadeMind add.Risk) | https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
-Malicious Lists #6 (Mandiant APT1 Appendix D) | https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
 Malicious Lists #7 (Phishing Army extended) | https://phishing.army/download/phishing_army_blocklist_extended.txt
 Malicious Lists #8 (NoTrack malware) | https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
 Malicious Lists #9 (RPiList-Malware via firebog) | https://v.firebog.net/hosts/RPiList-Malware.txt
 .zip block (malicious TLD) | https://raw.githubusercontent.com/brunomiguel/adguardhome-block-zip-tld/main/adguardhome-block-zip-tld.txt
-Phishing army | https://phishing.army/download/phishing_army_blocklist.txt
-oisd (big) | https://big.oisd.nl
 YouTube Shorts | https://raw.githubusercontent.com/pascal1888/hide-yt-shorts-test/main/list.txt
