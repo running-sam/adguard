@@ -2,10 +2,11 @@ name: Update merged filter list
 
 on:
   schedule:
-    # Runs once a day at 03:17 UTC (≈ 15:17 NZ standard time / 14:17 NZ daylight time).
+    # Runs once a day at 15:17 UTC = 03:17 NZ standard time / 04:17 NZ daylight time
+    # (early hours of the morning in New Zealand).
     # Change this if you want it more/less often — GitHub's minimum practical interval is ~5 min,
     # but once a day is plenty for DNS blocklists.
-    - cron: "17 3 * * *"
+    - cron: "17 15 * * *"
   workflow_dispatch: {}
   push:
     branches: [main]
