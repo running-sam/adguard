@@ -30,7 +30,7 @@ interval at the top of that page).
 
 - **The list itself**: fully automatic. The included GitHub Actions
   workflow (`.github/workflows/update.yml`) re-fetches all sources and
-  rebuilds `filters/merged.txt` once a day (03:17 UTC by default — edit the
+  rebuilds `filters/merged.txt` once a day (15:17 UTC by default — edit the
   `cron` line to change that) and re-publishes it as the `latest` release
   asset.
 - **Your source lists**: edit `sources.txt` (one `Name | URL` per line,
