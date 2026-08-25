@@ -34,6 +34,47 @@ jobs:
       - name: Merge filter lists
         run: python merge.py
 
+      - name: Publish merged list as a release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view latest >/dev/null 2>&1 || gh release create latest --title "Merged filter list (auto-updated)" --notes "Automatically rebuilt by GitHub Actions. Do not edit directly — it is overwritten on every run."
+          gh release upload latest filters/merged.txt --clobbererged filter list
+
+on:
+  schedule:
+    # Runs once a day at 03:17 UTC (≈ 15:17 NZ standard time / 14:17 NZ daylight time).
+    # Change this if you want it more/less often — GitHub's minimum practical interval is ~5 min,
+    # but once a day is plenty for DNS blocklists.
+    - cron: "17 3 * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - "sources.txt"
+      - "merge.py"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Merge filter lists
+        run: python merge.py
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
